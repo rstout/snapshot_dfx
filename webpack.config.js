@@ -12,8 +12,8 @@ const aliases = Object.entries(dfxJson.canisters)
   const filename = path.basename(value.main, ".mo");
   return {
     ...acc,
-    ["ic:canisters/" + name]: path.join(outputRoot, filename + ".js"),
-    ["ic:idl/" + name]: path.join(outputRoot, filename + ".did.js"),
+    ["ic:canisters/" + name]: path.join(outputRoot, name + ".js"),
+    ["ic:idl/" + name]: path.join(outputRoot, name + ".did.js"),
   };
 }, {});
 
@@ -44,6 +44,12 @@ function generateWebpackConfigForCanister(name, info) {
     output: {
       filename: "[name].js",
       path: path.join(inputRoot, info.frontend.output),
+    },
+    module: {
+	rules: [
+	    { test: /\.(js|ts)x?$/, loader: "ts-loader" },
+	    { test: /\.css$/, use: ['style-loader','css-loader'] }
+	]
     },
     plugins: [
     ],
